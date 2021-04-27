@@ -4,7 +4,7 @@ import java.math.BigInteger
 /*-This small library is an implementation of the shunting-yard algorithm:
 https://en.wikipedia.org/wiki/Shunting-yard_algorithm
 
--Every numeric value is processed as a BigInteger object so that the calculator can support numbers
+-Every numeric value is processed as a BigInteger type so that the calculator can support numbers
 * bigger than a standard long object. The ideal from a performance standpoint would be to type-check and
 * only use BigInteger when necessary, big I don't think the efficiency gain is worth the effort for such a small
 * project.*/
@@ -211,7 +211,6 @@ class expressionParserUtil {
 
             for (char in tempString) {
                 if (!char.isDigit() && !operators.contains(char) && char != '(' && char != ')' && char != ' ') {
-                    println("Invalid assignment")
                     invalidName = true
                     break
                 }
