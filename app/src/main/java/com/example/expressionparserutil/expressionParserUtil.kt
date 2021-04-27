@@ -26,7 +26,7 @@ class expressionParserUtil {
     /*Function responsible for processing digits in a string into individual numbers accordingly.
     * It outputs a list of strings without spaces, in which each item is either a number or a symbol. This is
     * so the parser knows that numbers with multiple digits are individual numbers and not multiple different numbers.*/
-    private fun numParser(str: String): List<String> {
+    fun numParser(str: String): List<String> {
         val outputList = mutableListOf<String>()
         var tempVar = ""
         var number = false
@@ -54,7 +54,7 @@ class expressionParserUtil {
     /*Function that implements an algorithm for processing double operators (++, --, +-, -+) and outputting a mutable list
     * with the corresponding resulting values. It is also responsible for replacing variables with it's
     * corresponding values according to the "variables" mutable map.*/
-    private fun operatorParser(str: String): MutableList<String> {
+    fun operatorParser(str: String): MutableList<String> {
         var outputString = str
 
         if (variables.isNotEmpty()) {
@@ -94,7 +94,7 @@ class expressionParserUtil {
 
     /*Implements the shunting-yard algorithm responsible for converting the expression in the infix format
      into a post-fix formatted  expression (Reverse Polish Notation, RPN), easier for calculating.*/
-    private fun infixToPostfix(exp: MutableList<String>): List<String> {
+    fun infixToPostfix(exp: MutableList<String>): List<String> {
         val result = mutableListOf<String>()
         val opList = mutableListOf<String>()
 
@@ -157,7 +157,7 @@ class expressionParserUtil {
 
 
     /*Algorithm that calculates the result of a post-fix formatted expression.*/
-    private fun postfixCalc(lst: List<String>): String {
+    fun postfixCalc(lst: List<String>): String {
         val stack = mutableListOf<String>()
         for (i in lst) {
             when {
@@ -226,7 +226,7 @@ class expressionParserUtil {
     }
 
     /*Takes a given expression string and returns the mathematical result in a string format.*/
-    private fun calc (str: String): String {
+    fun calc (str: String): String {
         return postfixCalc(infixToPostfix(operatorParser(str)))
     }
 
