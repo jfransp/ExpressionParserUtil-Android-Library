@@ -1,5 +1,4 @@
 package com.example.expressionparserutil
-import android.util.Log
 import java.math.BigInteger
 
 /*-This small library is an implementation of the shunting-yard algorithm:
