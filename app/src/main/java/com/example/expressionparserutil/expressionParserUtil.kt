@@ -1,13 +1,13 @@
 package com.example.expressionparserutil
+import android.util.Log
 import java.math.BigInteger
 
 /*-This small library is an implementation of the shunting-yard algorithm:
 https://en.wikipedia.org/wiki/Shunting-yard_algorithm
 
--Every numeric value is processed as a BigInteger type so that the calculator can support numbers
-* bigger than a standard long object. The ideal from a performance standpoint would be to type-check and
-* only use BigInteger when necessary, big I don't think the efficiency gain is worth the effort for such a small
-* project.*/
+-Every number is calculated as a Double in order to support floating-point values. The ideal from a performance standpoint
+ might be to type-check and only use Double when necessary, big I don't think the efficiency gain is worth the effort for such a small
+ project.*/
 class expressionParserUtil {
 
     companion object {
@@ -22,6 +22,18 @@ class expressionParserUtil {
     * into the parser, for creating new variables directly from an expression containing the "=" symbol.*/
     private val variables = mutableMapOf<String, BigInteger>()
 
+    /*Functions that standardizes the 'x' symbol into a '*' multiplying symbol.*/
+    fun subSymbol(str: String): String {
+        var outputString = ""
+
+        for (i in str) {
+            if (i == 'x') outputString += "*" else {
+                outputString += i
+            }
+        }
+        return outputString
+    }
+
 
     /*Function responsible for processing digits in a string into individual numbers accordingly.
     * It outputs a list of strings without spaces, in which each item is either a number or a symbol. This is
@@ -33,7 +45,7 @@ class expressionParserUtil {
         for (i in str.indices) {
             when {
                 str[i] == ' ' -> continue
-                !str[i].isDigit() -> {
+                !str[i].isDigit() && str[i] != '.'-> {
                     number = false
                     if (tempVar.isNotEmpty()) outputList.add(tempVar); tempVar = ""
                     outputList.add(str[i].toString())
@@ -43,6 +55,9 @@ class expressionParserUtil {
                     tempVar += str[i]
                 }
                 str[i].isDigit() && number -> {
+                    tempVar += str[i]
+                }
+                str[i] == '.' -> {
                     tempVar += str[i]
                 }
             }
@@ -164,22 +179,22 @@ class expressionParserUtil {
                 i.first().isDigit() -> stack.add(i)
                 i === lst.first() && (i.contains(Regex("-.")) || i.contains(Regex("\\+."))) -> stack.add(i)
                 i == "-" -> {
-                    val result = stack[stack.size - 2].toBigInteger() - stack.last().toBigInteger()
+                    val result = stack[stack.size - 2].toDouble() - stack.last().toDouble()
                     repeat(2) {stack.removeLast()}
                     stack.add(result.toString())
                 }
                 i == "+" -> {
-                    val result = stack[stack.size - 2].toBigInteger() + stack.last().toBigInteger()
+                    val result = stack[stack.size - 2].toDouble() + stack.last().toDouble()
                     repeat(2) {stack.removeLast()}
                     stack.add(result.toString())
                 }
                 i == "*" -> {
-                    val result = stack[stack.size - 2].toBigInteger() * stack.last().toBigInteger()
+                    val result = stack[stack.size - 2].toDouble() * stack.last().toDouble()
                     repeat(2) {stack.removeLast()}
                     stack.add(result.toString())
                 }
                 i == "/" -> {
-                    val result = stack[stack.size - 2].toBigInteger() / stack.last().toBigInteger()
+                    val result = stack[stack.size - 2].toDouble() / stack.last().toDouble()
                     repeat(2) {stack.removeLast()}
                     stack.add(result.toString())
                 }
@@ -226,7 +241,7 @@ class expressionParserUtil {
 
     /*Takes a given expression string and returns the mathematical result in a string format.*/
     fun calc (str: String): String {
-        return postfixCalc(infixToPostfix(operatorParser(str)))
+        return postfixCalc(infixToPostfix(operatorParser(subSymbol(str))))
     }
 
     /*Function that checks if the number of parenthesis is correct (if every opening parentheses
