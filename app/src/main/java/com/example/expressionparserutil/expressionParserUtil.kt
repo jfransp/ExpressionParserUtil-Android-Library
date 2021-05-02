@@ -26,8 +26,10 @@ class expressionParserUtil {
         var outputString = ""
 
         for (i in str) {
-            if (i == 'x') outputString += "*" else {
-                outputString += i
+            when (i) {
+                'x' -> outputString += "*"
+                '÷' -> outputString += "/"
+                else -> outputString += i
             }
         }
         return outputString
