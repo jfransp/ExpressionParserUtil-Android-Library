@@ -104,6 +104,18 @@ class expressionParserUtil {
                 } else doubleOperator = false
             }
         } while (doubleOperator)
+
+        if (outputList.first() == "+" || outputList.first() == "-") {
+            when (outputList.first()) {
+                "+" -> outputList.removeAt(0)
+                "-" -> {
+                    val firstNumber = outputList.get(1)
+                    outputList[1] = "-$firstNumber"
+                    outputList.removeAt(0)
+                }
+            }
+        }
+
         return outputList
     }
 
