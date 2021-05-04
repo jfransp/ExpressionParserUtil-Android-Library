@@ -1,5 +1,4 @@
 package com.example.expressionparserutil
-import java.math.BigInteger
 
 /*-This small library is an implementation of the shunting-yard algorithm:
 https://en.wikipedia.org/wiki/Shunting-yard_algorithm
@@ -20,7 +19,7 @@ class ExpressionParserUtil {
     * latin letter identifiers.
     * I don't know if this implementation is useful at all but here it is. There's a function, imbedded
     * into the parser, for creating new variables directly from an expression containing the "=" symbol.*/
-    val variables = mutableMapOf<String, BigInteger>()
+    val variables = mutableMapOf<String, Double>()
 
     /*Function that standardizes the 'x' symbol into a '*' multiplying symbol, and the '÷' symbol into
     * a '/' character, both which can be read by the parser.*/
@@ -274,7 +273,7 @@ class ExpressionParserUtil {
             if (!invalidName) {
                 val variableKey = string.substringBefore('=').trim()
                 val variableValue = this.calc(string.substringAfter('=').trim())
-                variables[variableKey] = variableValue.toBigInteger()
+                variables[variableKey] = variableValue.toDouble()
             }
         }
     }
