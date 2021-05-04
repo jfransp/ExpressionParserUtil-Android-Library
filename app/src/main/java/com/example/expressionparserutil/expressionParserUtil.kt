@@ -10,7 +10,7 @@ https://en.wikipedia.org/wiki/Shunting-yard_algorithm
 class ExpressionParserUtil {
 
     companion object {
-        const val operators = "-+*/^" /*The library doesn't support exponents yet.*/
+        const val operators = "-+*/^"
     }
 
     /*Map responsible for storing the value of possible saved variables so they can be understood and
@@ -19,7 +19,7 @@ class ExpressionParserUtil {
     * latin letter identifiers.
     * I don't know if this implementation is useful at all but here it is. There's a function, imbedded
     * into the parser, for creating new variables directly from an expression containing the "=" symbol.*/
-    val variables = mutableMapOf<String, Double>()
+    private val variables = mutableMapOf<String, Double>()
 
     /*Function that standardizes the 'x' symbol into a '*' multiplying symbol, and the '÷' symbol into
     * a '/' character, both which can be read by the parser.*/
@@ -126,7 +126,7 @@ class ExpressionParserUtil {
                 if (outputList[i] === outputList.last()) break
                 if (outputList[i] == "+" || outputList[i] == "-" && outputList[i - 1] == "*" || outputList[i - 1] == "/" || outputList[i - 1] == "(") {
                     when (outputList[i]) {
-                        "+" -> {
+                        "+" -> if (outputList[i + 1].first().isDigit() && !outputList[i - 1].first().isDigit()) {
                             val value = outputList[i + 1]
                             outputList[i + 1] = "+$value"
                             outputList.removeAt(i)
@@ -167,15 +167,15 @@ class ExpressionParserUtil {
                 "+" -> 1
                 "*" -> 2
                 "/" -> 2
-                "^" -> 3
                 else -> 0
             }
         }
 
         for (i in exp.indices) {
             when {
+                exp[i].first().isDigit() -> outputQueue.add(exp[i])
 
-                exp[i].first().isDigit() || exp[i].length > 1 && exp[i].first() == '-' || exp[i].first() == '+' -> outputQueue.add(exp[i])
+                exp[i].length > 1 && exp[i].first() == '-' || exp[i].length > 1 && exp[i].first() == '+' -> outputQueue.add(exp[i])
 
                 operators.contains(exp[i]) -> {
                     if (stack.isEmpty()) stack.add(exp[i]) else if (stack.isNotEmpty()) {
@@ -298,4 +298,3 @@ class ExpressionParserUtil {
         return true
     }
 }
-
