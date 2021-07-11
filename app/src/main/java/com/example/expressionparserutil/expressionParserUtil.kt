@@ -17,7 +17,7 @@ class ExpressionParserUtil {
     * processed by the parser. The implementation and storing of possible variables is the responsibility  of the
     * user of this library. Add saved variables into this data piece. Variables can only be stored with
     * latin letter identifiers.
-    * I don't know if this implementation is useful at all but here it is. There's a function, imbedded
+    * I don't know if this implementation is useful at all but here it is. There's a function, embedded
     * into the parser, for creating new variables directly from an expression containing the "=" symbol.*/
     private val variables = mutableMapOf<String, Double>()
 
@@ -69,7 +69,7 @@ class ExpressionParserUtil {
         return outputList
     }
 
-    /*Function that implements an algorithm for processing double operators and outputting a mutable list
+    /*Function that implements an algorithm for processing double operators and outputs a mutable list
     * with the corresponding resulting values. It is also responsible for replacing variables with it's
     * corresponding values according to the "variables" mutable map.*/
     private fun operatorParser(str: String): MutableList<String> {
@@ -243,10 +243,18 @@ class ExpressionParserUtil {
     }
 
 
+    /*Public functions to be used by the user of the library*/
+
+    /*Takes a given expression string and returns the mathematical result also in a string format.*/
+    fun calc (str: String): String {
+        return postfixCalc(infixToPostfix(operatorParser(subSymbol(str))))
+    }
+
     /*Function responsible for processing the value of an expression that might be creating a new
-    * variable. It applies the previews functions and saves the value of the variable in the "variables"
-    * map object.*/
-    private fun variableParser(string: String) {
+    * variable. It saves the value of the variable in the "variables"
+    * map object, which is read by the operatorParser private function in order to convert the variables
+    * back to numbers, which the library can process and calculate.*/
+    fun processVariable(string: String) {
         var invalidName = false
 
         if (string.contains(Regex(".=."))) {
@@ -276,11 +284,6 @@ class ExpressionParserUtil {
                 variables[variableKey] = variableValue.toDouble()
             }
         }
-    }
-
-    /*Takes a given expression string and returns the mathematical result also in a string format.*/
-    fun calc (str: String): String {
-        return postfixCalc(infixToPostfix(operatorParser(subSymbol(str))))
     }
 
     /*Function that checks if the number of parenthesis is correct (if every opening parentheses
