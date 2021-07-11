@@ -21,7 +21,7 @@ val mycalculator = ExpressionParserUtil()
 The `calc()` function accepts an expression (string) and if the expression is valid returns the result (string). Example:
 
 ```
-val result = mycalculator.calc("10*2(2)")
+mycalculator.calc("10*2(2)")
 ```
 Returns:
 `40`
