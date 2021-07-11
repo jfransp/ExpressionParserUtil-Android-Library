@@ -26,7 +26,7 @@ val result = mycalculator.calc("10*2(2)")
 Returns:
 `40`
 
-The `processVariable()` function parsers the expression and if it contains an "="(equals) sign, it considers it as an separator and saves the left side string as a variable in the `mycalculator.variables` (mutable map) and the right side string (number or expression result) as it's value. The `variables` object has no pre-set variables. Only latin letters are accepted as valid variable names.
+The `processVariable()` function parsers the expression and if it contains an "="(equals) sign, it considers it as an separator and saves the left side string as a variable in the `mycalculator.variables` (mutable map) and the right side string (number or expression result) as it's value, returning a `Unit`. The `variables` variable has no pre-set values. Only latin letters are accepted as valid variable names. Afterwards, every time that symbols is passed within an expression to the same `ExpressionParserUtil` object, it will automatically process it as it's corresponding saved value.
 PS: If the `calc()` function is called with an expression containing the "="(equals) symbol, it will throw an exception.
 
 The `parentesesCheck()` function returns `true` if the parentheses pairing is valid (if every opening parentheses has a closing parentheses) and `false` if it isn't.
