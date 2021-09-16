@@ -10,7 +10,7 @@ This project is based on a problem proposed on the Kotlin JetBrains Academy cour
 You can import the library to your own project using JitPack (just follow instructions):
 https://jitpack.io/#jfransp/ExpressionParserUtil-Android-Library
 
-The library not yet supports exponentiation since it wasn't useful for me when I wrote it - it accepts all the remaining basic operator symbols and also deals with double operator configurations.
+The library doesn't yet supports exponentiation since it wasn't useful to me when I wrote it - it accepts all the remaining basic operator symbols and also deals with double operator configurations.
 
 To use it just instanciate an `ExpressionParserUtil()` object (if you wish to use the internal variable functions you should remember that the variable/value pairs are saved always within the same object) - then, just use the object's functions to perform operations. Example:
 
